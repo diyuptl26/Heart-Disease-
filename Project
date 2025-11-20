@@ -1,0 +1,155 @@
+Introduce the Problem
+
+Heart disease is one of the most common health problems in the world. If doctors can detect it early, they can help patients live longer and healthier lives. In this project, I will try to build a machine learning model that can predict whether a person has heart disease based on their health information, like age, blood pressure, and cholesterol level.
+
+The main problem I want to solve is:
+Can we use health data to predict if someone has heart disease?
+
+Some questions I will try to answer are:
+
+Which health factors are most useful for predicting heart disease?
+Which classification method gives the best results?
+How accurate can my model be in making predictions?
+This project is a classification problem because the outcome is either yes (the person has heart disease) or no (the person does not have heart disease).
+
+Introduce the Data
+
+For this project, I am using the Heart Disease dataset from the UCI Machine Learning Repository, https://archive.ics.uci.edu/dataset/45/heart+disease
+
+The dataset contains health-related information about patients, and the goal is to predict whether they have heart disease or not. The target variable is a binary classification:
+
+1 = presence of heart disease
+0 = no heart disease
+Some of the key features include:
+
+Age: The age of the patient
+Sex: Male or Female (encoded as 1 = male, 0 = female)
+Chest Pain Type (cp): Different types of chest pain experienced
+Resting Blood Pressure (trestbps): Patient’s blood pressure at rest (mm Hg)
+Cholesterol (chol): Serum cholesterol level (mg/dl)
+Fasting Blood Sugar (fbs): Whether fasting blood sugar is > 120 mg/dl (1 = true, 0 = false)
+Resting ECG (restecg): Results of resting electrocardiogram
+Maximum Heart Rate (thalach): Maximum heart rate achieved during exercise
+Exercise Induced Angina (exang): Whether the patient had angina induced by exercise (1 = yes, 0 = no)
+Oldpeak: ST depression induced by exercise compared to rest
+Slope: The slope of the peak exercise ST segment
+Ca: Number of major vessels colored by fluoroscopy
+Thal: A blood disorder test result (normal, fixed defect, reversible defect)
+These features represent both medical test results and basic health indicators. By analyzing them, we can see which ones are most strongly related to heart disease.
+
+Pre-Processing the Data
+
+Before building a classification model, I needed to clean and prepare the dataset. These are the steps I followed and why they were important:
+
+Handling missing values
+
+Some columns in the dataset (like Ca and Thal) contain missing values.
+I either filled them wih most common value (mode) or removed rows with too many missing values.
+This step is important because machine learning models cannot handle missing data directly
+Convert Categorical Data to Numbers
+
+Features like Sex, Chest Pain Type, and Thal are categorical
+I used label encoding or one-hot encoding to convert them into numeric form
+This allows the model to understand and use these values for prediction
+Normalize/Scale Numerical Features
+
+Columns like Age, Cholestrol and Blood Pressure are on very different scales
+I applied standardization (z-score scaling) so that all features are on a similar range
+This helps models like logistic regression or KNN perfor, better
+Split the Data
+
+I divided the dataset into training (80%) and testing (20%) sets.
+The training set is used to teach the model, and the testing set is used to check how well the model performs on unseen data.
+Balance the Target Classes
+
+If one class (heart disease or no heart disease) has many more samples than the other, the model might become biased.
+In that case, I would use techniques like SMOTE (Synthetic Minority Oversampling) to balance the classes.
+Data Understanding/Visualization
+
+To better understand the data, I explored the relationships between different health factors and heart disease using several visualizations. These helped me see patterns that could guide my modeling later on.
+
+Distribution of the Target Variable
+
+I created a bar chart showing how many patients have heart disease vs. those who don’t.
+This helped me check if the dataset is balanced. If one class is much larger, I would need to handle that during preprocessing.
+Age vs. Heart Disease
+
+I used a histogram and boxplot to see how heart disease cases vary by age.
+I noticed that people above 50 years old have a higher chance of heart disease, which aligns with medical knowledge.
+Gender and Heart Disease
+
+I plotted a countplot of heart disease by gender.
+It showed that males are slightly more likely to have heart disease in this dataset.
+Cholesterol and Blood Pressure Levels
+
+I created scatter plots to compare cholesterol and resting blood pressure with the presence of heart disease.
+Higher cholesterol and blood pressure values were often seen among patients with heart disease.
+Correlation Heatmap
+
+I generated a heatmap to visualize the correlation between all numerical features.
+Features like Chest Pain Type, Oldpeak, Maximum Heart Rate, and Exercise Induced Angina showed strong relationships with heart disease
+How this step relates to modeling
+
+These visualizations helped me decide which features are most important for predicting heart disease. For example, I learned that age, cholesterol, and chest pain type are strong predictors, so I’ll make sure to include them in my model.
+By understanding these patterns early, I can also reduce noise in the data and improve my model’s accuracy.
+
+Modeling
+To solve the problem of predicting whether a person has heart disease, I used several classification algorithms. Each model has its own way of learning from the data and different strengths. I compared them to find which performs best for this dataset.
+
+For this study, I employed a variety of classification algorithms to predict if a person had heart disease or not.
+
+I began with Logistic Regression, which works well for binary outcomes like “heart disease” or “no heart disease.” It tries to find relationships between the input features (like age, cholesterol, and blood pressure) and the target variable. Logistic Regression is also easy to interpret, meaning I can see how each variable affects the final prediction. I used it as my baseline model to compare performance with more complex algorithms.
+
+Next, I used a Decision Tree Classifier, which works by splitting the data into smaller groups based on feature importance. For example, it might first split by chest pain type, then by cholesterol level, and so on. I liked using this model because it’s visual and makes it easier to understand how decisions are made. It also helped me identify which features are the strongest predictors of heart disease.
+
+Then, I tested K-Nearest Neighbors (KNN), which classifies each new patient by looking at the most similar patients in the dataset. For example, if most of the nearest patients have heart disease, the model predicts that the new patient will too. I used KNN because it’s simple and doesn’t make many assumptions about the data, but it can still perform well if the data is properly scaled.
+
+Finally, I tried a Random Forest Classifier, which is an ensemble method that combines multiple decision trees. Each tree makes its own prediction, and the forest takes a “majority vote” to decide the final result. This model usually performs very well because it reduces overfitting and captures more complex relationships. I expected this model to perform best on the dataset.
+
+After training all four models, I compared their accuracy and evaluation scores. This helped me see which one handled the dataset’s features and relationships most effectively.
+
+Evaluation
+After training all the models, I evaluated their performance to see which one predicted heart disease most accurately. To measure this, I used several evaluation metrics: accuracy, precision, recall, and F1-score. Each of these metrics gives different insights into how well the models performed.
+
+Accuracy tells me the overall percentage of correct predictions. It’s a good starting point but can be misleading if the dataset is imbalanced.
+Precision measures how many of the patients predicted to have heart disease actually do. This helps avoid false alarms.
+Recall shows how many of the real heart disease cases the model successfully identified. This is especially important in healthcare because missing a positive case could be dangerous.
+F1-score combines precision and recall into one number to give a balanced measure of performance.
+I also looked at the confusion matrix, which breaks down the results into true positives, true negatives, false positives, and false negatives. This helped me see exactly where the model made mistakes — for example, if it predicted “no disease” when the patient actually had one.
+
+In terms of performance, the Random Forest Classifier gave the best results overall. It achieved the highest accuracy and F1-score, showing that it could identify both healthy and at-risk patients effectively. Logistic Regression also performed well but didn’t capture the more complex relationships between variables. The Decision Tree was good at explaining the data but slightly overfit, and KNN worked fine but was less consistent compared to the others.
+
+Overall, the Random Forest model stood out as the most reliable for this classification task, balancing both accuracy and interpretability.
+
+Storytelling
+Through this project, I learned how different health factors work together to influence the risk of heart disease. By analyzing the dataset and testing multiple models, I was able to see clear patterns in the data that connected back to my main question — can we predict heart disease based on a person’s medical data?
+
+Based on the visualizations and model findings, I discovered that age, chest pain kind, cholesterol level, and maximal heart rate were some of the best indicators of heart disease. Patients who were older, had greater cholesterol, or reported particular forms of chest discomfort were considerably more likely to have heart disease.
+
+My models also revealed that other parameters, such as fasting blood sugar, did not have the predicted influence. This was intriguing because it reminded me that not all medical indications are equally relevant for predicting outcomes.
+
+The Random Forest model performed the best, demonstrating that combining many decision trees helps capture more complicated patterns in data. It also gave insight into feature relevance, demonstrating which health variables had the most impact on prediction.
+
+Overall, I was able to answer my initial question: yes, a classification algorithm can predict heart disease based on patient data. The findings also show the health variables doctors and patients should pay particular attention to.
+
+This study helped me better understand how data science can be utilized in healthcare to enhance early diagnosis and prevention, which has the potential to save lives if implemented in real-world situations.
+
+Impact
+This heart disease prediction study has some potential societal advantages, but it also raises some serious ethical concerns. On the plus side, a model like this might help doctors identify individuals who are at risk for heart disease earlier, allowing for better preventative care and speedier treatment. It might also help clinics make better use of their limited resources by concentrating on those who are most likely to require additional testing. Furthermore, patients may discover which health factors—such as cholesterol or activity level—have the greatest impact on heart disease risk, thus encouraging healthier lifestyle choices.
+
+However, there is a risk of undesirable consequences. If the model delivers a false negative forecast, a person with heart disease may not receive the necessary care, which might have significant repercussions. False positives, on the other hand, may lead to unneeded worry, more medical tests, or even unsuitable therapies. Bias is another cause for concern. Because the dataset we utilized may not represent all populations equally, the model may perform poorly for some groups depending on age, gender, or race, potentially leading to unfair or uneven healthcare results. Privacy is also a key concern, as medical data is sensitive and can be abused by insurance companies or employers if not adequately safeguarded.
+
+To mitigate these dangers, the model should serve as a decision-support tool rather than a replacement for medical experts. Doctors should carefully check projections before making clinical judgments. It is also critical to closely evaluate recall and accuracy, with a focus on reducing false negatives in particular. Testing the model for fairness across different demographic groups, and retraining it if necessary, would help assure more equitable outcomes. Maintaining tight data protection rules and being open about how the model operates are other critical considerations. Finally, the model should be evaluated with fresh data throughout time to ensure that it remains accurate and fair.
+
+Finally, this experiment demonstrates how machine learning may aid in the early diagnosis of cardiac disease and inform better healthcare decisions. At the same time, it serves as a reminder that even well-intentioned technologies can have unforeseen consequences, thus thorough testing, openness, and human oversight are required to guarantee the model is used ethically and responsibly.
+
+References:
+Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, 12, 2825–2830.
+
+UCI Machine Learning Repository. (n.d.). Heart Disease Dataset. Retrieved from https://archive.ics.uci.edu/ml/datasets/Heart+Disease
+
+Scikit-learn Developers. (2025). Scikit-learn: Machine Learning in Python. Retrieved from https://scikit-learn.org
+
+Kaggle. (n.d.). Heart Disease Prediction Dataset. Retrieved from https://www.kaggle.com/datasets/redwankarimsony/heart-disease-data?
+
+
